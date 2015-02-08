@@ -1,8 +1,14 @@
 package com.example.plugin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Intent;
 
 public class Hello extends CordovaPlugin {
 
@@ -11,10 +17,31 @@ public class Hello extends CordovaPlugin {
 
         if (action.equals("greet")) {
 
-            String name = data.getString(0);
-            String message = "Hello, " + name;
-            callbackContext.success(message);
+            if (data.length() != 1) {
+                //return new PluginResult(PluginResult.Status.INVALID_ACTION);
+                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
+                return false;
+            }
 
+            // Parse the data
+            JSONObject obj = data.getJSONObject(0);
+
+            JSONObject extras = obj.has("extras") ? obj.getJSONObject("extras") : null;
+            Map<String, String> extrasMap = new HashMap<String, String>();
+
+            // Populate the extras if any exist
+            if (extras != null) {
+                JSONArray extraNames = extras.names();
+                for (int i = 0; i < extraNames.length(); i++) {
+                    String key = extraNames.getString(i);
+                    String value = extras.getString(key);
+                    extrasMap.put(key, value);
+                }
+            }
+
+            sendBroadcast(obj.getString("action"), extrasMap);
+            //return new PluginResult(PluginResult.Status.OK);
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
             return true;
 
         } else {
@@ -22,5 +49,16 @@ public class Hello extends CordovaPlugin {
             return false;
 
         }
+    }
+    
+    void sendBroadcast(String action, Map<String, String> extras) {
+        Intent intent = new Intent();
+        intent.setAction(action);
+        for (String key : extras.keySet()) {
+            String value = extras.get(key);
+            intent.putExtra(key, value);
+        }
+
+        ((CordovaActivity)this.cordova.getActivity()).sendBroadcast(intent);
     }
 }
