@@ -3,7 +3,7 @@ package com.example.plugin;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.cordova.CordovaActivity;
+import com.example.plugin.CordovaActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
