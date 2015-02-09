@@ -24,7 +24,7 @@
     </config-file>
 
     <source-file src="src/android/Hello.java" target-dir="src/com/example/plugin/"/>
-    <source-file src="libs/cordovalib.jar" target-dir="libs/"/>
+    <!-- <source-file src="libs/cordovalib.jar" target-dir="libs/"/> -->
     <!-- <source-file src="src/android/CordovaActivity.java" target-dir="src/com/example/plugin/"/> -->
   </platform>
 
