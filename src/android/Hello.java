@@ -64,6 +64,6 @@ public class Hello extends CordovaPlugin {
             intent.putExtra(key, value);
         }
 
-        ((CordovaActivity)this.cordova.getActivity()).sendBroadcast(intent);
+        this.cordova.getActivity().sendBroadcast(intent);
     }
 }
