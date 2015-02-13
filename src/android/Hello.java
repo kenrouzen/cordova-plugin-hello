@@ -63,6 +63,7 @@ public class Hello extends CordovaPlugin {
             intent.putExtra(key, value);
         }
 
+        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         this.cordova.getActivity().sendBroadcast(intent);
     }
 }
